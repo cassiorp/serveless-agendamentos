@@ -1,0 +1,32 @@
+
+org: cassriorp28
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: serveless-agendamentos
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: serveless-agendamentos
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: us-east-1
+  memorySize: 128
+  timeout: 3
+
+functions:
+  getAgendas:
+    handler: src/agenda/controller/AgendaController.buscarAgendas
+    description: "Busca as agendas de medicos"
+    events:
+      - httpApi:
+          path: /agendas
+          method: get
+  hello:
+    handler: src/handlers/PostAgendamento.handler
+    events:
+      - httpApi:
+          path: /agendamento
+          method: post
