@@ -1,56 +1,29 @@
-"use strict";
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// src/agenda/controller/AgendaController.ts
-var AgendaController_exports = {};
-__export(AgendaController_exports, {
-  buscarAgendas: () => buscarAgendas
-});
-module.exports = __toCommonJS(AgendaController_exports);
-
-// src/agenda/mocks/agendas.mock.ts
-var agendasMock = [
-  {
-    id: 1,
-    nome: "Dr. Jo\xE3o Silva",
-    especialidade: "Cardiologista",
-    horariosDisponiveis: [
-      "2024-10-05 09:00",
-      "2024-10-05 10:00",
-      "2024-10-05 11:00"
-    ]
-  },
-  {
-    id: 2,
-    nome: "Dra. Maria Souza",
-    especialidade: "Dermatologista",
-    horariosDisponiveis: [
-      "2024-10-06 14:00",
-      "2024-10-06 15:00"
-    ]
-  }
-];
-
 // src/agenda/repository/AgendaRepository.ts
+import { promises as fs } from "fs";
+import * as path from "path";
+var FILE = path.resolve(process.cwd(), "src/agenda/mock/agendas.json");
 var AgendaRepository = class {
+  async readFile() {
+    const data = await fs.readFile(FILE, "utf-8");
+    return JSON.parse(data);
+  }
+  async writeFile(agendas) {
+    await fs.writeFile(FILE, JSON.stringify(agendas, null, 2), "utf-8");
+  }
   async findAll() {
-    return agendasMock;
+    return this.readFile();
+  }
+  async findById(id) {
+    const agendas = await this.readFile();
+    return agendas.find((a) => a.id === Number(id)) ?? null;
+  }
+  async deleteHorario(id, horario) {
+    const agendas = await this.readFile();
+    const agenda = agendas.find((a) => a.id === Number(id));
+    if (!agenda) return;
+    const alvo = (horario ?? "").trim();
+    agenda.horariosDisponiveis = (agenda.horariosDisponiveis ?? []).map((h) => h.trim()).filter((h) => h !== alvo);
+    await this.writeFile(agendas);
   }
 };
 
@@ -65,7 +38,7 @@ var AgendaMapper = class {
     entity.id = dto.id;
     entity.nome = dto.nome;
     entity.especialidade = dto.especialidade;
-    entity.horariosDisponiveis = dto.horarios_disponiveis;
+    entity.horariosDisponiveis = dto.horariosDisponiveis;
     return entity;
   }
   static toDTO(entity) {
@@ -73,7 +46,7 @@ var AgendaMapper = class {
       id: entity.id ?? 0,
       nome: entity.nome ?? "",
       especialidade: entity.especialidade ?? "",
-      horarios_disponiveis: entity.horariosDisponiveis ?? []
+      horariosDisponiveis: entity.horariosDisponiveis ?? []
     };
   }
   static toEntityList(dtos) {
@@ -88,6 +61,16 @@ var AgendaMapper = class {
 var AgendaService = class {
   constructor() {
     this.repository = new AgendaRepository();
+  }
+  async excluirHorario(id, horario) {
+    return this.repository.deleteHorario(id, horario);
+  }
+  async buscarPorId(id) {
+    const entity = await this.repository.findById(id);
+    if (!entity) {
+      return null;
+    }
+    return AgendaMapper.toDTO(entity);
   }
   async buscarAgendas() {
     const agendas = await this.repository.findAll();
@@ -112,8 +95,7 @@ var buscarAgendas = async () => {
     };
   }
 };
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
+export {
   buscarAgendas
-});
+};
 //# sourceMappingURL=AgendaController.js.map

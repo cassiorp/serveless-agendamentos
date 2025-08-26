@@ -7,7 +7,7 @@ export class AgendaMapper {
     entity.id = dto.id;
     entity.nome = dto.nome;
     entity.especialidade = dto.especialidade;
-    entity.horariosDisponiveis = dto.horarios_disponiveis;
+    entity.horariosDisponiveis = dto.horariosDisponiveis;
     return entity;
   }
 
@@ -16,7 +16,7 @@ export class AgendaMapper {
       id: entity.id ?? 0,
       nome: entity.nome ?? "",
       especialidade: entity.especialidade ?? "",
-      horarios_disponiveis: entity.horariosDisponiveis ?? [],
+      horariosDisponiveis: entity.horariosDisponiveis ?? [],
     };
   }
 

@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "nome": "Dr. João Silva",
+    "especialidade": "Cardiologista",
+    "horariosDisponiveis": []
+  },
+  {
+    "id": 2,
+    "nome": "Dra. Maria Souza",
+    "especialidade": "Dermatologista",
+    "horariosDisponiveis": [
+      "2024-10-06 14:00",
+      "2024-10-06 15:00"
+    ]
+  }
+]

@@ -24,8 +24,8 @@ functions:
       - httpApi:
           path: /agendas
           method: get
-  hello:
-    handler: src/handlers/PostAgendamento.handler
+  postAgendamento:
+    handler: src/agendamento/controller/AgendamentoController.marcarAgendamento
     events:
       - httpApi:
           path: /agendamento
