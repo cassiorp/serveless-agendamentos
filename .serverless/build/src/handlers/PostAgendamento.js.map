@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../src/handlers/PostAgendamento.ts"],
-  "sourcesContent": ["export async function handler(params:any) {\n    console.log('PostAgendamento', params);\n    \n    return {\n        statusCode: 200,\n        body: JSON.stringify(\n            {\n                message: 'PostAgendamento',\n                input: params,\n            },\n            null,\n            2\n        ),\n    };\n    \n}"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,eAAsB,QAAQ,QAAY;AACtC,UAAQ,IAAI,mBAAmB,MAAM;AAErC,SAAO;AAAA,IACH,YAAY;AAAA,IACZ,MAAM,KAAK;AAAA,MACP;AAAA,QACI,SAAS;AAAA,QACT,OAAO;AAAA,MACX;AAAA,MACA;AAAA,MACA;AAAA,IACJ;AAAA,EACJ;AAEJ;",
-  "names": []
-}
