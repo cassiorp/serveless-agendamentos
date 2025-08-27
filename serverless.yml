@@ -30,3 +30,18 @@ functions:
       - httpApi:
           path: /agendamento
           method: post
+
+  docs:
+    handler: src/docs/DocsController.serveDocs
+    events:
+      - httpApi:
+          path: /docs
+          method: get
+
+  openapi:
+    handler: src/docs/DocsController.serveOpenApi
+    events:
+      - httpApi:
+          path: /docs/openapi
+          method: get
+  

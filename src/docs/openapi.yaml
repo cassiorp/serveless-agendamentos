@@ -1,0 +1,143 @@
+openapi: 3.0.3
+info:
+  title: Serveless Agendamentos API
+  version: 1.0.0
+  description: API para buscar agendas e marcar agendamentos de pacientes.
+servers:
+  - url: http://localhost:3000
+    description: serverless-offline
+paths:
+  /agendas:
+    get:
+      summary: Buscar agendas e horários dos médicos
+      tags: [Agendas]
+      responses:
+        "200":
+          description: Lista de médicos com agendas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgendasResponse"
+              examples:
+                exemplo:
+                  value:
+                    medicos:
+                      - id: 1
+                        nome: Dr. João Silva
+                        especialidade: Cardiologista
+                        horarios_disponiveis:
+                          - "2024-10-05 09:00"
+                          - "2024-10-05 10:00"
+                          - "2024-10-05 11:00"
+                      - id: 2
+                        nome: Dra. Maria Souza
+                        especialidade: Dermatologista
+                        horarios_disponiveis:
+                          - "2024-10-06 14:00"
+                          - "2024-10-06 15:00"
+        "500":
+          description: Erro interno
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /agendamento:
+    post:
+      summary: Marcar agendamento do paciente
+      tags: [Agendamentos]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendamentoRequest"
+            examples:
+              exemplo:
+                value:
+                  agendamento:
+                    id: 1
+                    medico: "Dr. João Silva"
+                    paciente: "Carlos Almeida"
+                    dataHorario: "2024-10-05 09:00"
+      responses:
+        "201":
+          description: Agendamento criado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgendamentoResponse"
+        "400":
+          description: Payload inválido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Médico não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Horário já reservado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Horário indisponível
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Medico:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        nome: { type: string, example: "Dr. João Silva" }
+        especialidade: { type: string, example: "Cardiologista" }
+        horarios_disponiveis:
+          type: array
+          items: { type: string, example: "2024-10-05 09:00" }
+      required: [id, nome, especialidade, horarios_disponiveis]
+
+    AgendasResponse:
+      type: object
+      properties:
+        medicos:
+          type: array
+          items: { $ref: "#/components/schemas/Medico" }
+      required: [medicos]
+
+    AgendamentoDTO:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        medico: { type: string, example: "Dr. João Silva" }
+        paciente: { type: string, example: "Carlos Almeida" }
+        dataHorario: { type: string, example: "2024-10-05 09:00" }
+      required: [id, medico, paciente, dataHorario]
+
+    AgendamentoRequest:
+      type: object
+      properties:
+        agendamento:
+          $ref: "#/components/schemas/AgendamentoDTO"
+      required: [agendamento]
+
+    AgendamentoResponse:
+      type: object
+      properties:
+        mensagem: { type: string, example: "Agendamento realizado com sucesso" }
+        agendamento:
+          $ref: "#/components/schemas/AgendamentoDTO"
+      required: [mensagem, agendamento]
+
+    Error:
+      type: object
+      properties:
+        mensagem: { type: string }
+      required: [mensagem]
