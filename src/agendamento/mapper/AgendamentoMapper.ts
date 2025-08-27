@@ -4,6 +4,7 @@ import { AgendamentoEntity } from "../entity/AgendamentoEntity";
 export class AgendamentoMapper {
   static toEntity(dto: AgendamentoDTO): AgendamentoEntity {
     return new AgendamentoEntity({
+      id: dto.id,
       medico: dto.medico,
       paciente: dto.paciente,
       dataHorario: dto.dataHorario,
