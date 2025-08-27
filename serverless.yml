@@ -44,4 +44,10 @@ functions:
       - httpApi:
           path: /docs/openapi
           method: get
-  
+
+package:
+  patterns:
+    - src/agenda/mock/agendas.json
+    - src/agendamento/mock/agendamentos.json
+    - src/docs/openapi.yaml 
+
