@@ -4,11 +4,13 @@ import { promises as fs } from "fs";
 
 jest.mock("fs", () => ({
   promises: {
+    access: jest.fn(),
     readFile: jest.fn(),
     writeFile: jest.fn(),
   },
 }));
 
+const accessMock = fs.access as unknown as jest.Mock;
 const readFileMock = fs.readFile as unknown as jest.Mock;
 const writeFileMock = fs.writeFile as unknown as jest.Mock;
 
@@ -30,8 +32,13 @@ const seed: AgendaDTO[] = [
 describe("AgendaRepository", () => {
   let repo: AgendaRepository;
 
+  beforeAll(() => {
+    process.env.IS_OFFLINE = "true";
+  });
+
   beforeEach(() => {
     repo = new AgendaRepository();
+    accessMock.mockResolvedValue(undefined);
     readFileMock.mockResolvedValue(JSON.stringify(seed));
     writeFileMock.mockResolvedValue(undefined);
   });
