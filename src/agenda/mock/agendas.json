@@ -4,7 +4,11 @@
     "nome": "Dr. João Silva",
     "especialidade": "Cardiologista",
     "horariosDisponiveis": [
-      "2024-10-05 10:00"
+      "2024-10-05 09:00",
+      "2024-10-05 10:00",
+      "2024-10-05 11:00",
+      "2024-10-05 14:00",
+      "2024-10-06 09:00"
     ]
   },
   {
@@ -13,7 +17,31 @@
     "especialidade": "Dermatologista",
     "horariosDisponiveis": [
       "2024-10-06 14:00",
-      "2024-10-06 15:00"
+      "2024-10-06 15:00",
+      "2024-10-07 09:30",
+      "2024-10-07 10:30"
+    ]
+  },
+  {
+    "id": 3,
+    "nome": "Dr. Pedro Gomes",
+    "especialidade": "Ortopedista",
+    "horariosDisponiveis": [
+      "2024-10-08 09:00",
+      "2024-10-08 10:00",
+      "2024-10-08 11:30",
+      "2024-10-09 09:00"
+    ]
+  },
+  {
+    "id": 4,
+    "nome": "Dra. Luana Ferreira",
+    "especialidade": "Neurologista",
+    "horariosDisponiveis": [
+      "2024-10-09 14:00",
+      "2024-10-09 15:00",
+      "2024-10-10 09:00",
+      "2024-10-10 10:30"
     ]
   }
 ]
