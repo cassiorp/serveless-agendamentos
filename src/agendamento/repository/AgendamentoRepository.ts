@@ -1,19 +1,25 @@
 import { promises as fs } from "fs";
-import * as path from "path";
+import { resolveDataPath, ensureTmpSeed } from "../../shared/fileStore";
 import type { IAgendamentoRepository } from "../interface/IAgendamentoRepository";
 import type { AgendamentoEntity } from "../entity/AgendamentoEntity";
 
-const FILE = path.resolve(process.cwd(), "src/agendamento/mock/agendamentos.json");
+const SEED_REL = "src/agendamento/mock/agendamentos.json";
+const RUNTIME_FILE = resolveDataPath(SEED_REL);
 
 export class AgendamentoRepository implements IAgendamentoRepository {
+  private async ensureReady() {
+    await ensureTmpSeed(RUNTIME_FILE, SEED_REL);
+  }
 
   private async readFile(): Promise<AgendamentoEntity[]> {
-    const data = await fs.readFile(FILE, "utf-8");
+    await this.ensureReady();
+    const data = await fs.readFile(RUNTIME_FILE, "utf-8");
     return JSON.parse(data) as AgendamentoEntity[];
   }
 
-  private async writeFile(items: AgendamentoEntity[]): Promise<void> {
-    await fs.writeFile(FILE, JSON.stringify(items, null, 2), "utf-8");
+  private async writeFile(items: AgendamentoEntity[]) {
+    await this.ensureReady();
+    await fs.writeFile(RUNTIME_FILE, JSON.stringify(items, null, 2), "utf-8");
   }
 
   async save(entity: AgendamentoEntity): Promise<AgendamentoEntity> {
