@@ -12,6 +12,7 @@ export class AgendamentoMapper {
 
   static toDTO(entity: AgendamentoEntity): AgendamentoDTO {
     return {
+      id: entity.id ?? 0,
       medico: entity.medico ?? "",
       paciente: entity.paciente ?? "",
       dataHorario: entity.dataHorario ?? "",

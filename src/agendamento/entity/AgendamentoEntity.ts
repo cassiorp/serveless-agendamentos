@@ -1,4 +1,5 @@
 export class AgendamentoEntity {
+  id!: number;
   medico!: string;
   paciente!: string;
   dataHorario!: string;
